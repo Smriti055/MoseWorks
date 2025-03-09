@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import icon from "../assets/icon.png"; // Ensure the path is correct
+import icon from "../assets/icon.png"; // Adjust the path if needed
+
+
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme") || "light";
-    setDarkMode(theme === "dark");
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, []);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const toggleDarkMode = () => {
-    const newTheme = darkMode ? "light" : "dark";
     setDarkMode(!darkMode);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
   return (
@@ -28,53 +36,58 @@ const Navbar = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center py-4">
-        {/* Logo */}
-        <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-          MOSEWORKS
-        </h1>
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <div className="text-xl font-poppins font-bold text-gray-800 dark:text-white">
+            MOSEWORKS
+          </div>
 
-        {/* Brand Icon */}
-        <img src={icon} alt="Brand Icon" className="w-10 h-10" />
+          <div className="text-xl font-bold text-gray-800 dark:text-white">
+            <img
+              src={icon}
+              alt="Brand Icon"
+              className="w-10 h-10"
+            />
+          </div>
 
-        {/* Dark Mode Toggle */}
-        <motion.button
-          onClick={toggleDarkMode}
-          className="text-gray-800 dark:text-white focus:outline-none"
-          whileHover={{ scale: 1.2 }}
-        >
-          {darkMode ? "🌙" : "☀️"}
-        </motion.button>
+          {/* Dark Mode Toggle */}
+          <motion.button
+            onClick={toggleDarkMode}
+            className="text-gray-800 dark:text-white focus:outline-none"
+            whileHover={{ scale: 1.2 }}
+          >
+            {darkMode ? "🌙" : "☀️"}
+          </motion.button>
 
-        {/* Menu Toggle */}
-        <motion.button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-gray-800 dark:text-white focus:outline-none"
-          whileHover={{ scale: 1.2 }}
-        >
-          ☰
-        </motion.button>
+          {/* Menu Button */}
+          <motion.button
+            onClick={toggleMenu}
+            className="text-gray-800 dark:text-white focus:outline-none"
+            whileHover={{ scale: 1.2 }}
+          >
+            ☰
+          </motion.button>
+        </div>
+
+        {/* Collapsible Menu */}
+        {isMenuOpen && (
+          <motion.ul
+            className="pb-4 flex flex-col items-center space-y-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {["Home", "Features", "Contact"].map((item, index) => (
+              <motion.li
+                key={index}
+                className="text-gray-800 font-bold text-xl dark:text-white hover:text-gray-600 py-2 cursor-pointer"
+              >
+                <Link to={item === "Contact" ? "/contact" : "/"}>{item}</Link>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
       </div>
-
-      {/* Menu Items */}
-      <motion.div
-        className={`overflow-hidden ${isMenuOpen ? "block" : "hidden"}`}
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -10 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ul className="flex flex-col items-center space-y-2 pb-4">
-          {["Home", "Features", "Contact"].map((item, index) => (
-            <motion.li
-              key={index}
-              className="text-gray-800 font-bold text-xl dark:text-white hover:text-gray-600 py-2 cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-            >
-              <Link to={`/${item.toLowerCase()}`}>{item}</Link>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
     </motion.nav>
   );
 };

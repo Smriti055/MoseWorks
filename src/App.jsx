@@ -14,8 +14,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/contact' element={<ContactForm/>}/>
-        <Route path='/home' element={<Hero/>}/>
-        <Route path='/home' element={<Section/>}/>
+        <Route path='/' element={<Hero/>}/>
+        <Route path='/' element={<Section/>}/>
        
       </Routes>
       <Footer/>
