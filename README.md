@@ -1,7 +1,7 @@
 **Moseworks Website**
 
 
-This project implements a responsive webiste section using React, Tailwind CSS, and Framer Motion for smooth animations. The section is fully optimized for mobile, tablet, and desktop screens.
+This project implements a responsive website section using React, Tailwind CSS, and Framer Motion for smooth animations. The section is fully optimized for mobile, tablet, and desktop screens.
 
 🛠 Tech Stack
 
