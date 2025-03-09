@@ -82,7 +82,7 @@ const Hero = () => {
 
         {/* Second Row: 4 Columns */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 w-full border-t-4 border-b-4 border-gray-400"
+  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full border-t-4 border-b-4 border-gray-400"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
